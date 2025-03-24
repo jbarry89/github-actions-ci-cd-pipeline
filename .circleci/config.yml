@@ -26,17 +26,40 @@ jobs:
             echo "Deploying to Rendering Staging"
             curl $RENDER_STAGING_DEPLOYHOOK
 
+  deploy-to-render-production:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - run:
+          name: Deploy to Render Production
+          command:
+            echo "Deploying to Rendering Production"
+            curl $RENDER_PRODUCTION_DEPLOYHOOK
+
+# Build and Test before deploying
 workflows:
   run-tests:
     jobs:
-      - start-server
-      - cypress/run:
+      - start-server  # Install Dependencies and build the app
+      - cypress/run: # Run Cypress component Tests
           name: run-component-tests
           cypress-command: npx cypress run --component
-      - deploy-to-render-staging:
+      - deploy-to-render-staging: # Deploy the staging after tests pass
           requires:
             - run-component-tests
           filters:
             branches:
               only:
                 - main
+      - hold:  # Require manual approval before production deployment
+          type: approval
+          requires:
+            - deploy-to-render-staging
+      - deploy-to-render-production: # Deploy to production after approval
+          requires:
+            - hold
+          filters:
+            branches:
+              only:
+                - main
+
