@@ -1,8 +1,12 @@
 name: Lint workflow
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
+      - main
       - develop
       - staging
 
