@@ -54,6 +54,7 @@ workflows:
       - hold:  # Require manual approval before production deployment
           type: approval
           requires:
+            - deploy-to-render-staging
       - deploy-to-render-production: # Deploy to production after approval
           requires:
             - hold
