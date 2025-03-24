@@ -36,24 +36,25 @@ jobs:
             echo "Deploying to Rendering Production"
             curl $RENDER_PRODUCTION_DEPLOYHOOK
 
+# Build and Test before deploying
 workflows:
   run-tests:
     jobs:
-      - start-server
-      - cypress/run:
+      - start-server  # Install Dependencies and build the app
+      - cypress/run: # Run Cypress component Tests
           name: run-component-tests
           cypress-command: npx cypress run --component
-      - deploy-to-render-staging:
+      - deploy-to-render-staging: # Deploy the staging after tests pass
           requires:
             - run-component-tests
           filters:
             branches:
               only:
                 - main
-      - hold:
+      - hold:  # Require manual approval before production deployment
           type: approval
           requires:
-      - deploy-to-render-production:
+      - deploy-to-render-production: # Deploy to production after approval
           requires:
             - hold
           filters:
