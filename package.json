@@ -8,10 +8,13 @@
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "preview": "vite preview",
+    "eslint": "eslint src",
     "render-build": "npm install && npm run build",
     "test": "npx cypress run --browser electron",
     "test-component": "npx cypress run --component",
-    "test-gui": "npx cypress open"
+    "test-gui": "npx cypress open",
+    "lint": "eslint src --ext js,tsx --report-unused-disable-directives --max-warnings 0"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +24,12 @@
     "cypress": "^13.13.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3"
   },
   "dependencies": {
     "@vitejs/plugin-react": "^4.3.1",
