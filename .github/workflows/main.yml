@@ -1,28 +1,28 @@
-name: Lint workflow
+name: Cypress Component Test
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - develop
 
 jobs:
-  test:
+  cypress-tests:
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Use Node.js 21.x
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: 21.x
+          node-version: ${{ matrix.node-version }}
 
       - name: Install Dependencies
         run: npm install
 
-      - name: Lint code
-        run: npm run lint
+      - name: Run Cypress Component Tests
+        run: npm run test-component
