@@ -24,5 +24,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Start Server
+        run: npm run start
+        working-directory: server
+
+      - name: Wait for Server
+        run: npx wait-on http://localhost:3001
+
+
       - name: Run Cypress Component Tests
-        run: npm run test-component
+        run: npm run test
