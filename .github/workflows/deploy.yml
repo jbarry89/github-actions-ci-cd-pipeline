@@ -11,9 +11,12 @@ jobs:
   ci:
     name: Deploy To Render
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Run Tests
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
         run: npm install
     
       - name: Build Application
@@ -22,8 +25,6 @@ jobs:
       - name: Run Tests
         run: npm run test
       
-      - name: Seed Database
-        run: npm run seed
 
       - name: Deploy
       # Only run this step if the branch is main

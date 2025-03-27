@@ -24,11 +24,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Application
-        run: npm run build
+      - name: Seed Database
+        run: npm run seed 
 
       - name: Start Server
-        run: npm run start
+        run: npm run start &
         working-directory: server
 
       - name: Wait for Server
@@ -36,4 +36,4 @@ jobs:
 
 
       - name: Run Cypress Component Tests
-        run: npm run test-component
+        run: npm run test
