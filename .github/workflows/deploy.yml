@@ -16,4 +16,5 @@ jobs:
       - name: Deploy to Render
         run: |
           echo "Deploying application to Render..."
-          curl $RENDER_PRODUCTION_DEPLOYHOOK
+          response=$(curl -s $RENDER_PRODUCTION_DEPLOYHOOK)
+          echo "Response: $response"
