@@ -14,7 +14,10 @@
     "test": "npx cypress run --browser electron",
     "test-component": "npx cypress run --component",
     "test-gui": "npx cypress open",
-    "lint": "eslint src --ext js,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint:client": "eslint client/src --ext js,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:server": "eslint server/src --ext js,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "npm run lint:client && npm run lint:server"
+
   },
   "keywords": [],
   "author": "",
