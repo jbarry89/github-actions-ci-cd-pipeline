@@ -1,20 +1,29 @@
-name: Deploy to Render
+name: Deploy To Render
 
 on:
   push:
+    branches: [main]
+  pull_request:
     branches:
-      - main
+      - main    
 
 jobs:
-  deploy:
+  ci:
+    name: Deploy To Render
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Run Tests
+        run: |
+          npm install
+          npm run test
 
-      - name: Deploy to Render
+      - name: Deploy
+      # Only run this step if the branch is main
+        if: github.ref == 'refs/heads/main'
+        env:
+          RENDER_PRODUCTION_DEPLOYHOOK: ${{ secrets.RENDER_PRODUCTION_DEPLOYHOOK }}
+
         run: |
           echo "Deploying application to Render..."
-          response=$(curl -s $RENDER_PRODUCTION_DEPLOYHOOK)
-          echo "Response: $response"
+          curl -f "$RENDER_PRODUCTION_DEPLOYHOOK" || echo "Deployment failed. Please check the webhook."
