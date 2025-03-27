@@ -27,13 +27,16 @@ jobs:
       - name: Seed Database
         run: npm run seed 
 
-      - name: Start Server
+      - name: Start Backend Server
         run: npm run start &
         working-directory: server
 
-      - name: Wait for Server
-        run: npx wait-on http://localhost:3001
+      - name: Start Frontend Server
+        run: npm run dev -- --port 3001 &
+        working-directory: client
 
+      - name: Wait for Servers
+        run: npx wait-on http://localhost:3001
 
       - name: Run Cypress Component Tests
         run: npm run test
