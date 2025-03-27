@@ -14,16 +14,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run Tests
-        run: |
-          npm install
-          npm run test
+        run: npm install
+    
+      - name: Build Application
+        run: npm run build
+      
+      - name: Run Tests
+        run: npm run test
+      
+      - name: Seed Database
+        run: npm run seed
 
       - name: Deploy
       # Only run this step if the branch is main
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && env.RENDER_PRODUCTION_DEPLOYHOOK != ''
         env:
           RENDER_PRODUCTION_DEPLOYHOOK: ${{ secrets.RENDER_PRODUCTION_DEPLOYHOOK }}
-
         run: |
           echo "Deploying application to Render..."
           curl -f "$RENDER_PRODUCTION_DEPLOYHOOK" || echo "Deployment failed. Please check the webhook."
