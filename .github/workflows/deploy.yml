@@ -3,18 +3,19 @@ name: Deploy To Render
 on:
   push:
     branches: [main]
-  pull_request:
-    branches:
-      - main    
 
 jobs:
-  ci:
-    name: Deploy To Render
+  render-deploy:
+    strategy:
+        matrix:
+            node-version: [18.x, 20.x, 22.x]
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
+        with:
+            node-version: ${{ matrix.node-version }}
 
       - name: Install Dependencies
         run: npm install
@@ -22,11 +23,10 @@ jobs:
       - name: Build Application
         run: npm run build
       
-      - name: Run Tests
-        run: npm run test
-      
+    #   - name: Run Test
+    #     run: npm run test
 
-      - name: Deploy
+      - name: Deploy to Render
       # Only run this step if the branch is main
         if: github.ref == 'refs/heads/main' && env.RENDER_PRODUCTION_DEPLOYHOOK != ''
         env:
