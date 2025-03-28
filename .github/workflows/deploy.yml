@@ -23,7 +23,7 @@ jobs:
       - name: Build Application
         run: npm run build
       
-    #   - name: Run Tests
+    #   - name: Run Test
     #     run: npm run test
 
       - name: Deploy to Render
